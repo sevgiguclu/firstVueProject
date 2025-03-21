@@ -1,28 +1,112 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-navigation-drawer app>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            Crud Api
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Node.js - Vue.js 
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list
+        dense
+        nav
+      >
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon>mdi-home-analytics</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/">
+                Dashboard
+              </router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/users">
+                Users
+              </router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon>mdi-domain</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link to="/companies">
+                Companies
+              </router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <!-- -->
+    </v-app-bar>
+
+    <!-- Sizes your content based upon application components -->
+    <v-main>
+
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+
+        <!-- <v-div id="home_div">
+          <img alt="Vue logo" src="./assets/logo.png">
+          <HelloWorld msg="Welcome to Your Vue.js App"/>
+        </v-div> -->
+         <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  // components: {
+  //   HelloWorld
+  // },
+  // data () {
+  //     return {
+  //       items: [
+  //         { title: 'Dashboard', icon: 'mdi-view-dashboard',url:'/dashboard' },
+  //         { title: 'Users', icon: 'mdi-image',url:'/users' },
+  //         { title: 'Companies', icon: 'mdi-help-box',url:'/companies' },
+  //       ]
+  //     } 
+  // }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
