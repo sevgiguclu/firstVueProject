@@ -89,24 +89,4 @@
   </v-app>
 </template>
 
-<script>
-// import HelloWorld from './components/HelloWorld.vue'
-
-
-export default {
-  name: 'App',
-  // components: {
-  //   HelloWorld
-  // },
-  // data () {
-  //     return {
-  //       items: [
-  //         { title: 'Dashboard', icon: 'mdi-view-dashboard',url:'/dashboard' },
-  //         { title: 'Users', icon: 'mdi-image',url:'/users' },
-  //         { title: 'Companies', icon: 'mdi-help-box',url:'/companies' },
-  //       ]
-  //     } 
-  // }
-}
-</script>
 
