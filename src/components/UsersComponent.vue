@@ -4,12 +4,9 @@
     <h2>
       User Table
     </h2>
-    <v-btn
-      color="primary"
-      elevation="1"
-      rounded
-      @click="addUser"
-    >Create User</v-btn>
+    <v-btn class="my-3" color="primary" elevation="1" rounded @click="addUser">
+      Create User
+    </v-btn>
     <v-simple-table>
       <template v-slot:default>
         <thead>
@@ -20,15 +17,29 @@
             <th class="text-left">
               Email
             </th>
+            <th>
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr
             v-for="item in userList"
-            :key="item.name"
+            :key="item._id"
           >
-            <td>{{ item.name }}</td>
-            <td>{{ item.email }}</td>
+            <td class="data_view_td" @click="detailUser(item._id)">{{ item.name }}</td>
+            <td class="data_view_td" @click="detailUser(item._id)">{{ item.email }}</td>
+            <td>
+              <v-btn icon color="primary" @click="updateUser(item._id)" >
+                <v-icon >
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+              <v-btn icon color="red" @click="deleteUser(item._id)">
+                <v-icon >
+                  mdi-delete
+                </v-icon>
+              </v-btn>
+            </td>
           </tr>
         </tbody>
       </template>
@@ -40,7 +51,8 @@
 
 <script>
 
-import axios from 'axios'
+const axios =  require('axios');
+
   export default {
     data () {
       return {
@@ -48,11 +60,24 @@ import axios from 'axios'
       }
     },
     methods:{
-      addUser:function(event){
+      addUser: function(event){
         if (event) {
-          return this.$router.push('/users/adduser');
-
+          this.$router.push('/users/adduser');
         }
+      },
+      updateUser: function(id){
+         this.$router.push('/users/updateuser/'+id);
+      },
+      deleteUser : async function(id){
+        await axios.delete('http://localhost:8000/users/deleteuser/' + id)
+        .then(response => (this.userList = response.data))
+        .catch(function (error) {
+          console.log(error);
+          alert("error.. :( )")
+        });
+      },
+      detailUser:function(id){
+        this.$router.push('/users/finduserbyid/'+id);
       }
     },
     async mounted () {
@@ -64,3 +89,8 @@ import axios from 'axios'
 
  
 </script>
+<style>
+.data_view_td:hover {
+  cursor: pointer;
+}
+</style>

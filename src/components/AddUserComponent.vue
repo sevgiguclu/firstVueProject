@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+const axios =  require('axios');
+
   export default{
     data: () => ({
       userName:'',
@@ -39,21 +40,26 @@ import axios from 'axios'
     }),
     methods:{
       addUser:function(){
-        // alert("add user button click");
-        let req = {
-          name:this.userName,
-          email:this.userEmail
+        if(this.userName.trim().length == 0 || this.userEmail.trim().length == 0 ){
+          alert("please do not leave blank");
+        }else {
+          let req = {
+            name:this.userName,
+            email:this.userEmail
+          }
+          axios.post('http://localhost:8000/users',req)
+          .then(function (response) {
+            alert(response.data);
+          
+          })
+          .catch(function (error) {
+            console.log(error);
+            alert("error.. :( )")
+          });
         }
-        // console.log(this.userEmail);
-        axios.post('http://localhost:8000/users',req)
-        .then(function (response) {
-          console.log(response);
-          alert("user created and saved")
-        })
-        .catch(function (error) {
-          console.log(error);
-          alert("error.. :( )")
-        });
+        
+
+        
       }
     }
   }
