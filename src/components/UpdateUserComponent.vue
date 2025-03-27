@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <v-container >
     
     <h3>
       User Update
@@ -26,7 +26,7 @@
     </v-form>
    
     
-  </div>
+  </v-container>
 </template>
 
 <script>

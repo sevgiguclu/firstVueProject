@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <v-container >
     
     <h3>
       Add User  Compenent
@@ -24,7 +24,7 @@
       </v-container>
     </v-form>
     
-  </div>
+  </v-container>
 </template>
 
 <script>

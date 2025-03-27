@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <v-container >
     
     <h3 class="mb-3">
         User Details 
@@ -14,7 +14,7 @@
 
    
     
-  </div>
+  </v-container>
 </template>
 
 <script>
