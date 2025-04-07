@@ -87,7 +87,10 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-row>
+
+
+            <!-- address start-->
+            <!-- <v-row>
               <v-col col="12">
                 <v-text-field 
                   label="Adress Name"
@@ -103,6 +106,42 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col
+                col="12"
+              >
+                <v-text-field
+                  label="Adress City"
+                  v-model="userOne.address.city"
+                ></v-text-field>
+              </v-col>
+            </v-row> -->
+            <!-- address end -->
+                
+            <v-row v-show="addressSelectVisibility">
+              <v-col col="12">
+                <v-autocomplete
+                  :items="addressList"
+                  item-text="name"
+                  item-value="_id"
+                  label="Address"
+                  v-model="userOne.address"
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col
+                col="12"
+              >
+                <v-btn 
+                @click="addressSelectVisibility= true;addAddressBtnVisibility=false;"
+                v-show="addAddressBtnVisibility">
+                  Add Address
+                </v-btn>
+              </v-col>
+            </v-row> 
+
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
@@ -171,21 +210,19 @@ export default {
     return {
       userList: {},
       companyList:[],
+      addressList:[],
       userOne : {
         name:'',
         email:'',
         age:'',
         company:'',
-        address:{
-          name:'',
-          value:''
-        },
-        job:''
       },
       emailRules : [
         v => /.+@.+/.test(v) || 'E-mail must be valid',
       ],
       dialog: false,
+      addressSelectVisibility:false,
+      addAddressBtnVisibility:true
     };
   },
   methods: {
@@ -199,6 +236,10 @@ export default {
         .get("http://localhost:8000/companies")
         .then((response) => this.companyList = response.data)
         .catch((error) => console.log(error));
+
+        await axios
+        .get("http://localhost:8000/addresses")
+      . then((response) => (this.addressList = response.data));
 
     },
     addUser: async function(){
@@ -233,7 +274,7 @@ export default {
     },
     detailUser: function (id) {
       this.$router.push("/users/finduserbyid/" + id);
-    },
+    }
   },
   async mounted() {
     await axios
