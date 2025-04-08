@@ -312,9 +312,7 @@
                   </v-card-actions>
                 </v-card>
 
-
               </v-dialog>
-
 
               <v-btn icon color="red" @click="deleteUser(item._id)">
                 <v-icon> mdi-delete </v-icon>
@@ -324,6 +322,26 @@
         </tbody>
       </template>
     </v-simple-table>
+
+
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="snackbarTimeout"
+    >
+      {{ snackbarText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
   </v-container>
 </template>
 
@@ -348,7 +366,10 @@ export default {
       addUserDialog: false,
       updateUserDialog : false,
       addressSelectVisibility:false,
-      addAddressBtnVisibility:true
+      addAddressBtnVisibility:true,
+      snackbar:false,
+      snackbarText:'',
+      snackbarTimeout: 2000,
     };
   },
   methods: {
@@ -374,16 +395,19 @@ export default {
       //   this.$router.push("/users/adduser");
       // }
       console.log(this.userOne);
-      await axios.post('http://localhost:8000/users',this.userOne)
-        .then(function (response) {
-          alert(response.data);
+      await axios
+      .post('http://localhost:8000/users',this.userOne)
+      .then((response) => {
+          this.snackbarText = response.data;
+          this.snackbar = true;
         
-        })
-        .catch(function (error) {
-          console.log(error);
-          alert("error.. :( )")
-        });
+      })
+      .catch((error) => {
+          this.snackbarText = error.data;
+          this.snackbar = true;
+      });
       await this.initialize();
+      
 
 
     },
@@ -405,23 +429,28 @@ export default {
       // console.log(this.userOne);
       await axios
       .patch('http://localhost:8000/users/updateuser/' + this.userOne._id,this.userOne)
-      .then(response => {
-          console.log(response.data);
-          alert("user update");
+      .then((response) => {
+        this.snackbarText = response.data;
+        this.snackbar = true;
       })
-      .catch(function (error) {
-          console.log(error);
-          alert("error.. :( )")
+      .catch((error) => {
+        this.snackbarText = error.data;
+        this.snackbar = true;
       });
       
     },
     deleteUser: async function (id) {
       await axios
         .delete("http://localhost:8000/users/deleteuser/" + id)
-        .then((response) => (this.userList = response.data))
-        .catch(function (error) {
-          console.log(error);
-          alert("error.. :( )");
+        .then((response) => {
+          this.userList = response.data;
+          this.snackbarText = "user deleted";
+          this.snackbar = true;
+
+        })
+        .catch((error) => {
+          this.snackbarText = error.data;
+          this.snackbar = true;
         });
     },
     detailUser: function (id) {
