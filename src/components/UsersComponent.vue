@@ -200,60 +200,9 @@
                 <v-icon> mdi-delete </v-icon>
               </v-btn> -->
 
-              <!-- <v-btn icon color="red" @click="deleteUser(item._id)">
+              <v-btn icon color="red" @click="openDeleteUserDialog(item._id)">
                 <v-icon> mdi-delete </v-icon>
-              </v-btn> -->
-
-              <v-dialog
-                v-model="deleteUserDialog"
-                max-width="290"
-                :retain-focus="false"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn 
-                      class="my-3" 
-                      color="red" 
-                      icon
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="deleteUserDialog = false;"
-                    >
-                      <v-icon> mdi-delete  </v-icon>
-                    </v-btn>
-                </template>
-
-                <v-card>
-                  <v-card-title class="text-h6">
-                    Are you sure you want to delete this user?
-                  </v-card-title>
-
-                  <v-card-text>
-                    Once you press the Okey key, this action cannot be undone.
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                      color="green darken-1"
-                      text
-                      @click="deleteUserDialog = false"
-                    >
-                      Cancel
-                    </v-btn>
-
-                    <v-btn
-                      color="green darken-1"
-                      text
-                      @click="deleteUser(item._id)"
-                    >
-                      Okey
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-
-
+              </v-btn>
 
             </td>
           </tr>
@@ -373,6 +322,45 @@
     </div>
     <!-- update user dialog end -->
 
+
+    <!-- delete user dialog start -->
+    <v-dialog
+      v-model="deleteUserDialog"
+      max-width="290"
+    >
+
+      <v-card>
+        <v-card-title class="text-h6">
+          Are you sure you want to delete this user?
+        </v-card-title>
+
+        <v-card-text>
+          Once you press the Okey key, this action cannot be undone.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteUserDialog = false"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteUser()"
+          >
+            Okey
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- delete user dialog end -->
+
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -491,10 +479,16 @@ export default {
       });
       
     },
-    deleteUser: async function (id) {
+    openDeleteUserDialog: async function(id){
+      this.deleteUserDialog = true;
+      await axios
+      .get("http://localhost:8000/users/finduserbyid/"+id)
+      .then((response) => (this.userOne = response.data));
+    },
+    deleteUser: async function () {
       this.deleteUserDialog = false;
       await axios
-        .delete("http://localhost:8000/users/deleteuser/" + id)
+        .delete("http://localhost:8000/users/deleteuser/" + this.userOne._id)
         .then((response) => {
           this.userList = response.data;
           this.snackbarText = "user deleted";
