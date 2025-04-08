@@ -169,7 +169,6 @@
     </div>
     <!-- add user dialog end -->
 
-
     <v-simple-table>
       <template v-slot:default>
         <thead>
@@ -193,126 +192,13 @@
                 <v-icon> mdi-pencil </v-icon>
               </v-btn> -->
 
-              <v-dialog 
-                v-model="updateUserDialog"
-                persistent
-                max-width="600px"
-                :retain-focus="false"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn 
-                      class="my-3" 
-                      color="primary" 
-                      icon
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="openUpdateUserDialog(item._id)"
-                    >
-                      <v-icon> mdi-pencil </v-icon>
-                    </v-btn>
-                </template>
+              <v-btn icon color="primary" @click="openUpdateUserDialog(item._id)">
+                <v-icon> mdi-pencil </v-icon>
+              </v-btn>
 
-                <v-card>
-                  <v-card-title>
-                    <span class="text-h5">Update User</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col
-                          cols="12"
-                        >
-                          <v-text-field
-                            label="Name*"
-                            v-model="userOne.name"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col
-                          cols="12"
-                        >
-                          <v-text-field
-                            label="E-mail"
-                            v-model="userOne.email"
-                            hint="Your email must include @"
-                            :rules="emailRules"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                        >
-                          <v-select
-                            :items="['0-17', '18-29', '30-54', '54+']"
-                            v-model="userOne.age"
-                            label="Age"
-                          ></v-select>
-                        </v-col>
-                        <v-col
-                          cols="12"
-                          sm="6"
-                        >
-                          <v-autocomplete
-                            :items="companyList"
-                            item-text="name"
-                            item-value="_id"
-                            label="Company*"
-                            v-model="userOne.company"
-                            required
-                          ></v-autocomplete>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col
-                          cols="12"
-                        >
-                          <v-text-field
-                            label="Job"
-                            v-model="userOne.job"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-
-                          
-                      <v-row>
-                        <v-col col="12">
-                          <v-autocomplete
-                            :items="addressList"
-                            item-text="name"
-                            item-value="_id"
-                            label="Address"
-                            v-model="userOne.address"
-                          ></v-autocomplete>
-                        </v-col>
-                      </v-row> 
-
-                    </v-container>
-                    <small>*indicates required field</small>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="updateUserDialog = false;"
-                    >
-                      Close
-                    </v-btn>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="updateUser()"
-                    >
-                      Save
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-
-              </v-dialog>
+              <!-- <v-btn icon color="red" @click="deleteUser(item._id)">
+                <v-icon> mdi-delete </v-icon>
+              </v-btn> -->
 
               <!-- <v-btn icon color="red" @click="deleteUser(item._id)">
                 <v-icon> mdi-delete </v-icon>
@@ -375,6 +261,117 @@
       </template>
     </v-simple-table>
 
+    <!-- update user dialog start -->
+    <div>
+        <v-dialog 
+          v-model="updateUserDialog"
+          persistent
+          max-width="600px"
+        >
+
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Update User</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="Name*"
+                      v-model="userOne.name"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="E-mail"
+                      v-model="userOne.email"
+                      hint="Your email must include @"
+                      :rules="emailRules"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                  >
+                    <v-select
+                      :items="['0-17', '18-29', '30-54', '54+']"
+                      v-model="userOne.age"
+                      label="Age"
+                    ></v-select>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                  >
+                    <v-autocomplete
+                      :items="companyList"
+                      item-text="name"
+                      item-value="_id"
+                      label="Company*"
+                      v-model="userOne.company"
+                      required
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="Job"
+                      v-model="userOne.job"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                    
+                <v-row>
+                  <v-col col="12">
+                    <v-autocomplete
+                      :items="addressList"
+                      item-text="name"
+                      item-value="_id"
+                      label="Address"
+                      v-model="userOne.address"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row> 
+
+              </v-container>
+              <small>*indicates required field</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="updateUserDialog = false;"
+              >
+                Close
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="updateUser()"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+        </v-dialog>
+    </div>
+    <!-- update user dialog end -->
 
     <v-snackbar
       v-model="snackbar"
@@ -465,6 +462,7 @@ export default {
 
     },
     openUpdateUserDialog: async function(id){
+      this.updateUserDialog= true;
       await axios
       .get("http://localhost:8000/users/finduserbyid/"+id)
       .then((response) => (this.userOne = response.data));
@@ -476,6 +474,7 @@ export default {
         await axios
         .get("http://localhost:8000/addresses")
         .then((response) => (this.addressList = response.data));
+
     },
     updateUser: async function () {
       // this.$router.push("/users/updateuser/" + id);
