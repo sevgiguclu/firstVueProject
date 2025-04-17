@@ -1,3 +1,4 @@
+
 <template>
   <div id="home_div" class="hello">
     <h1>{{ msg }}</h1>
@@ -31,10 +32,14 @@
 </template>
 
 <script>
+const axiosService = require('../service/axiosService');
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  mounted() {
+    axiosService.controlToken()
   }
 }
 </script>
@@ -64,4 +69,16 @@ li {
 a {
   color: #42b983;
 }
+
 </style>
+
+<!-- 
+<style>
+    .v-navigation-drawer,header.v-sheet {
+        display: flex !important;
+    }
+    main {
+        padding: initial ;
+    }
+</style>
+-->

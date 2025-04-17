@@ -55,6 +55,17 @@
               <v-row>
                 <v-col
                   cols="12"
+                >
+                  <v-text-field
+                    label="Password"
+                    v-model="userOne.password"
+                    type="password"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  cols="12"
                   sm="6"
                 >
                   <v-select
@@ -384,7 +395,7 @@
 
 <script>
 const axios = require("axios");
-
+const axiosService = require('../service/axiosService');
 export default {
   data() {
     return {
@@ -411,12 +422,8 @@ export default {
     };
   },
   methods: {
-    initialize : async function(){
-      await axios
-      .get("http://localhost:8000/users")
-      .then((response) => (this.userList = response.data));
-    },
-    openAddUserDialog: async function () {
+    async openAddUserDialog () {
+        await axiosService.controlToken();
         this.userOne = {};
         await axios
         .get("http://localhost:8000/companies")
@@ -428,27 +435,7 @@ export default {
         .then((response) => (this.addressList = response.data));
 
     },
-    addUser: async function(){
-      // if (event) {
-      //   this.$router.push("/users/adduser");
-      // }
-      console.log(this.userOne);
-      await axios
-      .post('http://localhost:8000/users',this.userOne)
-      .then((response) => {
-          this.snackbarText = response.data;
-          this.snackbar = true;
-        
-      })
-      .catch((error) => {
-          this.snackbarText = error.data;
-          this.snackbar = true;
-      });
-      await this.initialize();
-      
-
-
-    },
+    addUser: axiosService.addUser,
     openUpdateUserDialog: async function(id){
       this.updateUserDialog= true;
       await axios
@@ -459,7 +446,7 @@ export default {
         .then((response) => this.companyList = response.data)
         .catch((error) => console.log(error));
 
-        await axios
+      await axios
         .get("http://localhost:8000/addresses")
         .then((response) => (this.addressList = response.data));
 
@@ -505,10 +492,8 @@ export default {
     }
   },
   async mounted() {
-    await axios
-      .get("http://localhost:8000/users")
-      .then((response) => (this.userList = response.data));
-  },
+    this.userList  = await axiosService.getAllUser();
+  }
 };
 </script>
 <style>

@@ -8,6 +8,8 @@ import AddUser from './components/AddUserComponent'
 import DetailUser from './components/DetailUserComponent'
 import UpdateUser from './components/UpdateUserComponent'
 import Companies from './components/CompaniesComponent'
+import Login from './components/LoginComponent'
+
 
 Vue.config.productionTip = false
 
@@ -20,6 +22,8 @@ const routes = [
   {path:'/users/updateuser/:id',component:UpdateUser},
   {path:'/users/finduserbyid/:id',component:DetailUser},
   {path:'/companies',component:Companies},
+  {path:'/login',component:Login},
+
 ]
 const router = new VueRouter({
   routes
@@ -29,4 +33,5 @@ new Vue({
   vuetify,
   router,
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');
+
