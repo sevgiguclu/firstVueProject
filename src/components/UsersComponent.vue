@@ -175,7 +175,6 @@
           </v-card-actions>
         </v-card>
 
-
       </v-dialog>
     </div>
     <!-- add user dialog end -->
@@ -333,7 +332,6 @@
     </div>
     <!-- update user dialog end -->
 
-
     <!-- delete user dialog start -->
     <v-dialog
       v-model="deleteUserDialog"
@@ -394,7 +392,6 @@
 </template>
 
 <script>
-const axios = require("axios");
 const axiosService = require('../service/axiosService');
 export default {
   data() {
@@ -423,69 +420,48 @@ export default {
   },
   methods: {
     async openAddUserDialog () {
-        await axiosService.controlToken();
         this.userOne = {};
-        await axios
-        .get("http://localhost:8000/companies")
-        .then((response) => this.companyList = response.data)
-        .catch((error) => console.log(error));
-
-        await axios
-        .get("http://localhost:8000/addresses")
-        .then((response) => (this.addressList = response.data));
-
+        this.companyList = await axiosService.getAllCompany();
+        this.addressList = await axiosService.getAllAddress();
     },
-    addUser: axiosService.addUser,
-    openUpdateUserDialog: async function(id){
+    async addUser(){
+      if(this.userOne.name && this.userOne.company){
+        this.snackbarText = await axiosService.addUser(this.userOne);
+        this.snackbar = true;
+        this.userList = await axiosService.getAllUser();
+      }
+      else{
+        this.snackbarText = "please check your form";
+        this.snackbar = true;
+      }
+    },
+    async openUpdateUserDialog(id){
       this.updateUserDialog= true;
-      await axios
-      .get("http://localhost:8000/users/finduserbyid/"+id)
-      .then((response) => (this.userOne = response.data));
-      await axios
-        .get("http://localhost:8000/companies")
-        .then((response) => this.companyList = response.data)
-        .catch((error) => console.log(error));
-
-      await axios
-        .get("http://localhost:8000/addresses")
-        .then((response) => (this.addressList = response.data));
-
+      this.userOne = await axiosService.findUserById(id);
+      this.companyList = await axiosService.getAllCompany();
+      this.addressList = await axiosService.getAllAddress();
     },
-    updateUser: async function () {
+    async updateUser() {
       // this.$router.push("/users/updateuser/" + id);
       // console.log(this.userOne);
-      await axios
-      .patch('http://localhost:8000/users/updateuser/' + this.userOne._id,this.userOne)
-      .then((response) => {
-        this.snackbarText = response.data;
-        this.snackbar = true;
-      })
-      .catch((error) => {
-        this.snackbarText = error.data;
-        this.snackbar = true;
-      });
-      
+      const update_response = await axiosService.updateUser(this.userOne._id,this.userOne);
+      this.snackbarText = update_response;
+      this.snackbar = true;
+      this.userList = await axiosService.getAllUser();
     },
-    openDeleteUserDialog: async function(id){
+    async openDeleteUserDialog(id){
       this.deleteUserDialog = true;
-      await axios
-      .get("http://localhost:8000/users/finduserbyid/"+id)
-      .then((response) => (this.userOne = response.data));
+      this.userOne = await axiosService.findUserById(id);
     },
-    deleteUser: async function () {
+    async deleteUser() {
       this.deleteUserDialog = false;
-      await axios
-        .delete("http://localhost:8000/users/deleteuser/" + this.userOne._id)
-        .then((response) => {
-          this.userList = response.data;
-          this.snackbarText = "user deleted";
-          this.snackbar = true;
-
-        })
-        .catch((error) => {
-          this.snackbarText = error.data;
-          this.snackbar = true;
-        });
+      const delete_response = await axiosService.deleteUser(this.userOne._id);
+      this.userList = delete_response;
+      if(typeof(delete_response) === "object")
+        this.snackbarText = "user deleted";
+      else
+        this.snackbarText = delete_response;
+      this.snackbar = true;
     },
     detailUser: function (id) {
       this.$router.push("/users/finduserbyid/" + id);

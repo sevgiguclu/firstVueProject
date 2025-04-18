@@ -55,7 +55,6 @@
         
 </template>
 
-
 <script>
 const axios = require("axios");
 
@@ -73,21 +72,13 @@ export default {
     },
     methods: {
         login: async function() {
-            // console.log(this.userValues);
+            localStorage.clear();
             if(this.userValues){
                 //post user values
                 await axios
                 .post("http://localhost:8000/users/login",this.userValues)
                 .then(async (response) => {
-                    console.log("response",response);
-                    // axios.defaults.headers.common['authorization'] = response.data.accessToken;
-                    // console.log(axios.defaults.headers.common['authorization']);
-
-                    // tokenUser.accesToken = response.data.accessToken;
-                    console.log("logindeki id",response.data.findUser._id);
-                    // tokenUser.id = response.data.findUser._id;
-                    // tokenUser.userValues = this.userValues;
-                    // tokenUser.refreshToken = response.data.refreshToken;
+                    // console.log("logindeki id",response.data.findUser._id);
                     localStorage.setItem("tokenUser-accesToken", response.data.accessToken);
                     localStorage.setItem("tokenUser-id", response.data.findUser._id);
                     localStorage.setItem("tokenUser-useremail",this.userValues.email);
@@ -97,39 +88,35 @@ export default {
                     if(response.data.findUser._id && response.data.accessToken){
                         //authorization
                         await axios
-                        .post("http://localhost:8000/users/finduserbyidwithauth/"+ response.data.findUser._id,
-                            this.userValues,
-                            {
-                                headers: {
-                                    'authorization': response.data.accessToken,
+                            .post("http://localhost:8000/users/finduserbyidwithauth/"+ response.data.findUser._id,
+                                this.userValues,
+                                {
+                                    headers: {
+                                        'authorization': response.data.accessToken,
+                                    }
                                 }
-                            }
-                        )
-                        .then( (res) => {
-                            console.log("auth response : ",res);
-                            this.$router.push('/');
-                        })
-                        .catch(err => console.log(err));
-                        }
+                            )
+                            .then( () => {
+                                // console.log("auth response : ",res);
+                                this.$router.push('/');
+                            })
+                            .catch(
+                                // err => console.log(err)
+                            );
+                    }
                     
-
                 })
-                .catch(err => console.log(err));
+                .catch(
+                    // err => console.log(err);
+                );
             }
-
-            
+              
         }
     }
 }
 </script>
 
 <style>
-    .v-navigation-drawer,header.v-sheet {
-        display: none ;
-    }
-    main {
-        padding: 0 !important;
-    }
     #login_card {
         position: relative;
         top: 25vh;
