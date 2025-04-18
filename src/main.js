@@ -22,7 +22,7 @@ const routes = [
   {path:'/users/updateuser/:id',component:UpdateUser},
   {path:'/users/finduserbyid/:id',component:DetailUser},
   {path:'/companies',component:Companies},
-  {path:'/login',component:Login},
+  {path:'/login',component:Login,meta: { hideLayout: true }},
 
 ]
 const router = new VueRouter({

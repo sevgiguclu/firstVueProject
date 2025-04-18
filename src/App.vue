@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
+    <v-navigation-drawer app v-if="!$route.meta.hideLayout">
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
@@ -65,7 +65,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app v-if="!$route.meta.hideLayout">
       <!-- -->
     </v-app-bar>
 
