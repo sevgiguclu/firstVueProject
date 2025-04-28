@@ -1,14 +1,10 @@
 const axios = require("axios");
 const controlToken = async function(){
-    let user_email = localStorage.getItem("tokenUser-useremail");
-    let user_pass = localStorage.getItem("tokenUser-userpass");
+    // let user_email = localStorage.getItem("tokenUser-useremail");
+    // let user_pass = localStorage.getItem("tokenUser-userpass");
     // console.log("tokenlı userın idsi - controlToken metodu",localStorage.getItem("tokenUser-id"));
     await axios
-        .post("http://localhost:8000/users/finduserbyidwithauth/"+ localStorage.getItem("tokenUser-id"),
-            {
-                "email":user_email,
-                "password":user_pass
-            },
+        .get("http://localhost:8000/users/finduserbyid/"+ localStorage.getItem("tokenUser-id"),
             {
                 headers: {
                     'authorization': localStorage.getItem("tokenUser-accesToken"),

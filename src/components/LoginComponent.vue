@@ -51,7 +51,28 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+
+            <v-snackbar
+                v-model="snackbar"
+                :timeout="snackbarTimeout"
+                >
+                {{ snackbarText }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar = false"
+                    >
+                    Close
+                    </v-btn>
+                </template>
+            </v-snackbar>
+
         </v-card>
+
+        
         
 </template>
 
@@ -62,17 +83,21 @@ export default {
     data(){
         return {
             userValues:{
-                email:'',
-                password:''
+                email:null,
+                password:null
             },
             emailRules : [
                 v => /.+@.+/.test(v) || 'E-mail must be valid',
             ],
+            snackbar:false,
+            snackbarText:'',
+            snackbarTimeout: 2000,
         }
     },
     methods: {
         login: async function() {
             localStorage.clear();
+            console.log(this.userValues.email);
             if(this.userValues){
                 //post user values
                 await axios
@@ -88,8 +113,7 @@ export default {
                     if(response.data.findUser._id && response.data.accessToken){
                         //authorization
                         await axios
-                            .post("http://localhost:8000/users/finduserbyidwithauth/"+ response.data.findUser._id,
-                                this.userValues,
+                            .get("http://localhost:8000/users/finduserbyid/"+ response.data.findUser._id,
                                 {
                                     headers: {
                                         'authorization': response.data.accessToken,
@@ -100,14 +124,19 @@ export default {
                                 // console.log("auth response : ",res);
                                 this.$router.push('/');
                             })
-                            .catch(
-                                // err => console.log(err)
+                            .catch((err) => {
+                                console.log(err);
+                            }
                             );
                     }
                     
                 })
-                .catch(
+                .catch(()=>{
                     // err => console.log(err);
+                    this.snackbarText = "please check your form";
+                    this.snackbar = true;
+                    }
+                    
                 );
             }
               

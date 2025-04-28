@@ -29,130 +29,136 @@
           </v-card-title>
           <v-card-text>
             <v-container>
-              <v-row>
-                <v-col
-                  cols="12"
-                >
-                  <v-text-field
-                    label="Name*"
-                    v-model="userOne.name"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                >
-                  <v-text-field
-                    label="E-mail"
-                    v-model="userOne.email"
-                    hint="Your email must include @"
-                    :rules="emailRules"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                >
-                  <v-text-field
-                    label="Password"
-                    v-model="userOne.password"
-                    type="password"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-select
-                    :items="['0-17', '18-29', '30-54', '54+']"
-                    v-model="userOne.age"
-                    label="Age"
-                  ></v-select>
-                </v-col>
-                <v-col
-                  cols="12"
-                  sm="6"
-                >
-                  <v-autocomplete
-                    :items="companyList"
-                    item-text="name"
-                    item-value="_id"
-                    label="Company*"
-                    v-model="userOne.company"
-                    required
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                >
-                  <v-text-field
-                    label="Job"
-                    v-model="userOne.job"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-
-              <!-- address start-->
-              <!-- <v-row>
-                <v-col col="12">
-                  <v-text-field 
-                    label="Adress Name"
-                    v-model="userOne.address.name"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col col="12">
-                  <v-text-field 
-                    label="Adress"
-                    v-model="userOne.address.value"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  col="12"
-                >
-                  <v-text-field
-                    label="Adress City"
-                    v-model="userOne.address.city"
-                  ></v-text-field>
-                </v-col>
-              </v-row> -->
-              <!-- address end -->
+              <v-form
+                ref="formAddUser"
+                v-model="validAddUserForm"
+              >
                   
-              <v-row v-show="addressSelectVisibility">
-                <v-col col="12">
-                  <v-autocomplete
-                    :items="addressList"
-                    item-text="name"
-                    item-value="_id"
-                    label="Address"
-                    v-model="userOne.address"
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="Name*"
+                      v-model="userOne.name"
+                      :rules="formLengthRules"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="E-mail"
+                      v-model="userOne.email"
+                      hint="Your email must include @"
+                      :rules="emailRules"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="Password*"
+                      v-model="userOne.password"
+                      type="password"
+                      :rules="passwordRules"
+                      hint="Your password must be less than 10 characters"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                  >
+                    <v-select
+                      :items="['0-17', '18-29', '30-54', '54+']"
+                      v-model="userOne.age"
+                      label="Age"
+                    ></v-select>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                  >
+                    <v-autocomplete
+                      :items="companyList"
+                      item-text="name"
+                      item-value="_id"
+                      label="Company*"
+                      v-model="userOne.company"
+                      :rules="companyRules"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-text-field
+                      label="Job"
+                      v-model="userOne.job"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col
-                  col="12"
-                >
-                  <v-btn 
-                  @click="addressSelectVisibility= true;addAddressBtnVisibility=false;"
-                  v-show="addAddressBtnVisibility">
-                    Add Address
-                  </v-btn>
-                </v-col>
-              </v-row> 
+                <!-- address start-->
+                <!-- <v-row>
+                  <v-col col="12">
+                    <v-text-field 
+                      label="Adress Name"
+                      v-model="userOne.address.name"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col col="12">
+                    <v-text-field 
+                      label="Adress"
+                      v-model="userOne.address.value"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    col="12"
+                  >
+                    <v-text-field
+                      label="Adress City"
+                      v-model="userOne.address.city"
+                    ></v-text-field>
+                  </v-col>
+                </v-row> -->
+                <!-- address end -->
+                    
+                <v-row v-show="addressSelectVisibility">
+                  <v-col col="12">
+                    <v-autocomplete
+                      :items="addressList"
+                      item-text="name"
+                      item-value="_id"
+                      label="Address"
+                      v-model="userOne.address"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
 
+                <v-row>
+                  <v-col
+                    col="12"
+                  >
+                    <v-btn 
+                    @click="addressSelectVisibility= true; addAddressBtnVisibility=false;"
+                    v-show="addAddressBtnVisibility">
+                      Add Address
+                    </v-btn>
+                  </v-col>
+                </v-row> 
+              </v-form>
             </v-container>
             <small>*indicates required field</small>
           </v-card-text>
@@ -169,6 +175,7 @@
               color="blue darken-1"
               text
               @click="addUser"
+              :disabled="!validAddUserForm"
             >
               Save
             </v-btn>
@@ -234,78 +241,82 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                  >
-                    <v-text-field
-                      label="Name*"
-                      v-model="userOne.name"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    cols="12"
-                  >
-                    <v-text-field
-                      label="E-mail"
-                      v-model="userOne.email"
-                      hint="Your email must include @"
-                      :rules="emailRules"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <v-select
-                      :items="['0-17', '18-29', '30-54', '54+']"
-                      v-model="userOne.age"
-                      label="Age"
-                    ></v-select>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                  >
-                    <v-autocomplete
-                      :items="companyList"
-                      item-text="name"
-                      item-value="_id"
-                      label="Company*"
-                      v-model="userOne.company"
-                      required
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col
-                    cols="12"
-                  >
-                    <v-text-field
-                      label="Job"
-                      v-model="userOne.job"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <v-form
+                  ref="formUpdateUser"
+                  v-model="validUpdateUserForm"
+                >
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        label="Name*"
+                        v-model="userOne.name"
+                        :rules="formLengthRules"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        label="E-mail"
+                        v-model="userOne.email"
+                        hint="Your email must include @"
+                        :rules="emailRules"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                    >
+                      <v-select
+                        :items="['0-17', '18-29', '30-54', '54+']"
+                        v-model="userOne.age"
+                        label="Age"
+                      ></v-select>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                    >
+                      <v-autocomplete
+                        :items="companyList"
+                        item-text="name"
+                        item-value="_id"
+                        label="Company*"
+                        v-model="userOne.company"
+                        :rules="companyRules"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
+                        label="Job"
+                        v-model="userOne.job"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
-                    
-                <v-row>
-                  <v-col col="12">
-                    <v-autocomplete
-                      :items="addressList"
-                      item-text="name"
-                      item-value="_id"
-                      label="Address"
-                      v-model="userOne.address"
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row> 
-
+                      
+                  <v-row>
+                    <v-col col="12">
+                      <v-autocomplete
+                        :items="addressList"
+                        item-text="name"
+                        item-value="_id"
+                        label="Address"
+                        v-model="userOne.address"
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row> 
+                </v-form>
               </v-container>
               <small>*indicates required field</small>
             </v-card-text>
@@ -322,6 +333,7 @@
                 color="blue darken-1"
                 text
                 @click="updateUser()"
+                :disabled="!validUpdateUserForm"
               >
                 Save
               </v-btn>
@@ -392,7 +404,8 @@
 </template>
 
 <script>
-const axiosService = require('../service/axiosService');
+// const axiosService = require('../service/axiosService');
+const axiosService = require('../service/axiosServiceWithAxiosCreate');
 export default {
   data() {
     return {
@@ -405,8 +418,19 @@ export default {
         age:'',
         company:'',
       },
+      formLengthRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length >= 2) || 'Must be more than 2 characters',
+      ],
       emailRules : [
-        v => /.+@.+/.test(v) || 'E-mail must be valid',
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      companyRules:[
+        v=>!!v || 'Company is required'
+      ],
+      passwordRules:[
+         v => (v && v.length >= 10) || 'Must be more than 10 characters',
       ],
       addUserDialog: false,
       updateUserDialog : false,
@@ -416,6 +440,8 @@ export default {
       snackbar:false,
       snackbarText:'',
       snackbarTimeout: 2000,
+      validAddUserForm:true,
+      validUpdateUserForm:true,
     };
   },
   methods: {
@@ -425,7 +451,8 @@ export default {
         this.addressList = await axiosService.getAllAddress();
     },
     async addUser(){
-      if(this.userOne.name && this.userOne.company){
+      this.$refs.formAddUser.validate();
+      if(this.userOne.name && this.userOne.company && this.userOne.email && this.userOne.password){
         this.snackbarText = await axiosService.addUser(this.userOne);
         this.snackbar = true;
         this.userList = await axiosService.getAllUser();
@@ -444,6 +471,7 @@ export default {
     async updateUser() {
       // this.$router.push("/users/updateuser/" + id);
       // console.log(this.userOne);
+      this.$refs.formUpdateUser.validate();
       const update_response = await axiosService.updateUser(this.userOne._id,this.userOne);
       this.snackbarText = update_response;
       this.snackbar = true;
@@ -468,7 +496,8 @@ export default {
     }
   },
   async mounted() {
-    this.userList  = await axiosService.getAllUser();
+    // this.userList  = await axiosService.getAllUser();
+    this.userList = await axiosService.getAllUser();
   }
 };
 </script>
